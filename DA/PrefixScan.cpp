@@ -57,6 +57,7 @@ int main(int argc, char* argv[])
   
 	printf("\nExclusive Prefix Scan:\n");   
     eStart = omp_get_wtime();
+#pragma omp parallel 
 	computeEScan(EscanData, startData, N); 
     eEnd = omp_get_wtime();
 	{
@@ -71,7 +72,8 @@ seconds\n",eEnd-eStart);
 
 	printf("\nInclusive Prefix Scan:\n");   
  	iStart = omp_get_wtime();
-	computeIScan(IscanData, startData, N); 
+#pragma omp parallel 	
+computeIScan(IscanData, startData, N); 
     iEnd = omp_get_wtime();
 #pragma omp parallel for 
 	for (i = 0; i < N; i++){   
