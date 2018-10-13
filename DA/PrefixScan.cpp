@@ -11,7 +11,7 @@
 void computeEScan(float* odata, float* idata, const unsigned int len)
 {
 	odata[0] = 0;
-
+#pragma omp parallel for
 	for (unsigned int i = 1; i < len; ++i) {
 		odata[i] = idata[i - 1] + odata[i - 1];
 	}
@@ -23,7 +23,7 @@ void computeEScan(float* odata, float* idata, const unsigned int len)
 void computeIScan( float* odata, float* idata, const unsigned int len)   
 {   
 	odata[0] = idata[0];   
-
+#pragma omp parallel for
 	for( unsigned int i = 1; i < len; ++i){   
 		odata[i] = idata[i] + odata[i-1];   
 	}   
@@ -33,7 +33,7 @@ void init_data(float *W, int len)
 {   
 	
 	int i;  
-
+#pragma omp parallel for
 	for (i = 0; i < len; i++) {   
 		W[i] = (rand()%100) / 10.0; 
 	}   
@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
 	computeEScan(EscanData, startData, N); 
     eEnd = omp_get_wtime();
 	{
+#pragma omp parallel for
 		for (i = 0; i < N; i++) {
 			printf("%3.1f ", EscanData[i]);
 		}
@@ -72,7 +73,7 @@ seconds\n",eEnd-eStart);
  	iStart = omp_get_wtime();
 	computeIScan(IscanData, startData, N); 
     iEnd = omp_get_wtime();
-
+#pragma omp parallel for 
 	for (i = 0; i < N; i++){   
 		printf ("%3.1f ",IscanData[i]);   
 	}   
